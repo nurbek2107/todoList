@@ -1,4 +1,3 @@
-// src/pages/Home.js
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useCollection } from "../hooks/useCollection";
@@ -28,6 +27,15 @@ export const action = async ({ request }) => {
   return { title, age, familyName, email };
 };
 
+export const saveSelectedTodos = (selectedTodos) => {
+  localStorage.setItem('selectedTodos', JSON.stringify(selectedTodos));
+};
+
+export const loadSelectedTodos = () => {
+  const storedTodos = localStorage.getItem('selectedTodos');
+  return storedTodos ? JSON.parse(storedTodos) : [];
+};
+
 function Home() {
   const { user } = useSelector((state) => state.user);
   const { data: todos } = useCollection(
@@ -39,7 +47,7 @@ function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedTodos, setSelectedTodos] = useState([]);
+  const [selectedTodos, setSelectedTodos] = useState(loadSelectedTodos());
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -55,9 +63,20 @@ function Home() {
     }
   }, [userData, user.uid]);
 
+  useEffect(() => {
+    // Local storage'ga selectedTodos holatini saqlash
+    saveSelectedTodos(selectedTodos);
+  }, [selectedTodos]);
+
   const deleteDocument = (id) => {
     deleteDoc(doc(db, "todos", id)).then(() => {
       toast.success("Deleted");
+      // Local Storage'dan ham o'chirish
+      setSelectedTodos(prevSelectedTodos => {
+        const updatedSelectedTodos = prevSelectedTodos.filter(todo => todo.id !== id);
+        saveSelectedTodos(updatedSelectedTodos);
+        return updatedSelectedTodos;
+      });
     });
   };
 
@@ -78,12 +97,14 @@ function Home() {
   };
 
   const handleCheckboxChange = (todo) => {
-    setSelectedTodos((prevSelectedTodos) => {
-      if (prevSelectedTodos.includes(todo)) {
-        return prevSelectedTodos.filter((t) => t !== todo);
-      } else {
-        return [...prevSelectedTodos, todo];
-      }
+    setSelectedTodos(prevSelectedTodos => {
+      const isSelected = prevSelectedTodos.some(t => t.id === todo.id);
+      const updatedTodos = isSelected
+        ? prevSelectedTodos.filter(t => t.id !== todo.id)
+        : [...prevSelectedTodos, todo];
+
+      saveSelectedTodos(updatedTodos); // Local storage'ga saqlash
+      return updatedTodos;
     });
   };
 
@@ -148,7 +169,7 @@ function Home() {
                 >
                   <input
                     type="checkbox"
-                    checked={selectedTodos.includes(todo)}
+                    checked={selectedTodos.some(t => t.id === todo.id)}
                     onChange={() => handleCheckboxChange(todo)}
                   />
                   <div className="flex gap-4" onClick={() => viewTodoDetails(todo)}>
@@ -178,7 +199,7 @@ function Home() {
 
       <button
         onClick={goToSelectedTodosPage}
-        className="btn btn-primary mt-4"
+        className="btn btn-primary -mt-20"
         disabled={selectedTodos.length === 0}
       >
         View Selected Todos

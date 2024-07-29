@@ -1,9 +1,10 @@
-// src/pages/SelectedTodos.js
 import { useLocation } from "react-router-dom";
 
 const SelectedTodos = () => {
   const location = useLocation();
   const selectedTodos = location.state?.selectedTodos || [];
+
+  console.log('Selected Todos:', selectedTodos); // Tekshiruv uchun
 
   return (
     <div className="container mx-auto p-5">

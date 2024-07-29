@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, useActionData, Link } from "react-router-dom";
 import FormInput from "../components/FormInput";
 import { useRegister } from "../hooks/useRegister";
@@ -6,6 +6,7 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import toast from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import Spline from "@splinetool/react-spline";
 
 // Action function to handle form data
 export const action = async ({ request }) => {
@@ -77,21 +78,20 @@ function Register() {
   };
 
   return (
-    <div className="mt-7">
-      <div className="flex rounded-lg gap-10 shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
-        <div
-          className="hidden lg:block lg:w-1/2 bg-cover"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1546514714-df0ccc50d7bf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=667&q=80')",
-          }}
-        ></div>
+    <div>
+      <div className="flex rounded-lg gap-6 justify-center mt-10 overflow-hidden ">
+        <div className="hidden lg:block lg:w-1/2 bg-cover">
+          <main className="z-0  h-[600px]">
+            <Spline
+              scene="https://prod.spline.design/HtNn-u7PNdXiAZNv/scene.splinecode"
+              options={{ drag: false }}
+            />
+          </main>
+        </div>
         <div className="w-full p-8 lg:w-1/2">
-          <h2 className="text-2xl font-semibold text-center">Brand</h2>
-          <p className="text-xl text-center">Welcome!</p>
           <Form method="post">
             {error && (
-              <div className="text-red-500 text-center mb-4">{error}</div>
+              <div className="text-red-500  mb-4">{error}</div>
             )}
             <div className="mt-4">
               <FormInput
@@ -113,7 +113,7 @@ function Register() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-14 top-[50px]"
+                className="absolute left-72 top-[50px]"
               >
                 {showPassword ? (
                   <AiOutlineEyeInvisible className="w-5 h-5" />
@@ -167,7 +167,6 @@ function Register() {
               Sign up with Google
             </span>
           </button>
-          {error && <div className="text-center mt-4">{error}</div>}
           <div className="mt-4 flex items-center justify-between w-80">
             <span className="border-b w-1/5 md:w-1/4"></span>
             <Link to="/login" className="text-xs text-gray-500 uppercase">
