@@ -170,7 +170,7 @@ function Register() {
           <div className="mt-4 flex items-center justify-between w-80">
             <span className="border-b w-1/5 md:w-1/4"></span>
             <Link to="/login" className="text-xs text-gray-500 uppercase">
-              or sign up
+              or Login
             </Link>
             <span className="border-b w-1/5 md:w-1/4"></span>
           </div>

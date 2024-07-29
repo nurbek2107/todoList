@@ -4,6 +4,7 @@ import { useCollection } from "../hooks/useCollection";
 import FormInput from "../components/FormInput"; // Adjust the import path if necessary
 import { Form, useActionData } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { FaExternalLinkAlt } from "react-icons/fa";
 import {
   collection,
   addDoc,
@@ -167,12 +168,7 @@ function Home() {
                   className="flex gap-4 items-center justify-between p-5 shadow-xl cursor-pointer w-[100%]"
                   key={todo.id}
                 >
-                  <input
-                    type="checkbox"
-                    checked={selectedTodos.some(t => t.id === todo.id)}
-                    onChange={() => handleCheckboxChange(todo)}
-                  />
-                  <div className="flex gap-4" onClick={() => viewTodoDetails(todo)}>
+                  <div className="flex gap-4" >
                     <p className="text-xl">
                       <span className="text-slate-600">ID:</span> {todo.age}
                     </p>
@@ -181,6 +177,12 @@ function Home() {
                     </p>
                   </div>
                   <div className="flex items-center gap-4">
+                    <input
+                      type="checkbox"
+                      checked={selectedTodos.some(t => t.id === todo.id)}
+                      onChange={() => handleCheckboxChange(todo)}
+                    />
+                    <FaExternalLinkAlt onClick={() => viewTodoDetails(todo)} />
                     <button
                       onClick={(e) => {
                         e.stopPropagation();

@@ -44,7 +44,7 @@ const TodoDetail = () => {
   return (
     <div className="container mx-auto p-5">
       <h1 className="text-3xl font-bold mb-5">ToDo Tafsilotlari</h1>
-      <div className="card bg-base-100 shadow-xl p-5">
+      <div className="card bg-base-100  p-5">
         <div className='flex'>
           <div className=''>
             <img src="https://images.wallpaperscraft.ru/image/single/fon_temnyj_piatna_51861_300x168.jpg" alt="" />
