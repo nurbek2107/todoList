@@ -16,6 +16,7 @@ const TodoDetail = () => {
   const [email, setEmail] = useState(todo?.email || '');
   const [passport, setPassport] = useState(todo?.passport || '');
   const [img, setImg] = useState(todo?.img || '');
+  const [salary, setsalary] = useState(todo?.salary || '');
   const [isEditing, setIsEditing] = useState(false);
 
   if (!todo) {
@@ -31,7 +32,8 @@ const TodoDetail = () => {
         familyName,
         email,
         passport,
-        img
+        img,
+        salary
       });
       toast.success("ToDo muvaffaqiyatli yangilandi");
       setIsEditing(false);
@@ -54,19 +56,23 @@ const TodoDetail = () => {
             />
           </div>
           <div className='ml-6 flex-grow'>
-            <p className='text-3xl font-bold '>{familyName || "N/A"}</p>
-            <p className='text-lg  mt-2'>Age: {age || "N/A"}</p>
-            <p className='text-lg '>Email: {email || "N/A"}</p>
-            <p className='text-lg '>Passport: {passport || "N/A"}</p>
+            <p className='text-3xl font-bold '>{familyName || "John Doe"}</p>
+            <p className='text-lg  mt-2'>ID: {age || "12345"}</p>
+            <p className='text-lg '>Email: {email || "user@gmail.com"}</p>
+            <p className='text-lg '>Passport: {passport || "AB554452"}</p>
           </div>
-        </div>
-        <button
+          <div className='flex flex-col'>
+          <button
           className="btn btn-primary mt-4 px-4 py-2 text-lg font-semibold"
           onClick={() => setIsEditing(true)}
         >
           <MdOutlineEdit className='inline-block w-6 h-6 mr-2' />
           Edit
         </button>
+        <h1 className='mt-8 font-semibold text-xl'>salary: {salary ? `${salary}$` : "$100"}</h1>
+
+        </div>
+        </div>
       </div>
 
       {isEditing && (
@@ -111,6 +117,16 @@ const TodoDetail = () => {
                   type="text"
                   value={passport}
                   onChange={(e) => setPassport(e.target.value)}
+                  className="input input-bordered w-full mt-1 p-2 border rounded"
+                  aria-label="Passport"
+                />
+              </label>
+              <label className="text-lg">
+                <span className="font-semibold">Salary:</span>
+                <input
+                  type="text"
+                  value={salary}
+                  onChange={(e) => setsalary(e.target.value)}
                   className="input input-bordered w-full mt-1 p-2 border rounded"
                   aria-label="Passport"
                 />

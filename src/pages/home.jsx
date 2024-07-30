@@ -20,6 +20,11 @@ export const action = async ({ request }) => {
   const email = formData.get("email");
   const img = formData.get("img");
 
+  // Validate form data
+  if (!age || !familyName || !email) {
+    return { error: "All fields are required." };
+  }
+
   return { title, age, familyName, email, img };
 };
 
@@ -43,18 +48,23 @@ function Home() {
   const userData = useActionData();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTodos, setSelectedTodos] = useState(loadSelectedTodos());
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     if (userData) {
-      const newDoc = {
-        ...userData,
-        uid: user.uid,
-        createAt: serverTimestamp(),
-      };
-      addDoc(collection(db, "todos"), newDoc).then(() => {
-        toast.success("Successfully Added");
-      });
+      if (userData.error) {
+        setError(userData.error);
+      } else {
+        const newDoc = {
+          ...userData,
+          uid: user.uid,
+          createAt: serverTimestamp(),
+        };
+        addDoc(collection(db, "todos"), newDoc).then(() => {
+          toast.success("Successfully Added");
+        });
+      }
     }
   }, [userData, user.uid]);
 
@@ -128,6 +138,7 @@ function Home() {
                 Add
               </button>
             </div>
+            {error && <p className="text-red-500 mt-2">{error}</p>}
           </Form>
         </div>
         <div className="w-full">
@@ -169,7 +180,7 @@ function Home() {
                   className="flex gap-4 items-center justify-between p-5 mt-4 shadow-xl cursor-pointer w-[100%]"
                   key={todo.id}
                 >
-                  <div className="flex gap-8">
+                  <div className="flex gap-4">
                     <div tabIndex="0" role="button" className="avatar">
                       <div className="w-10 rounded-full">
                         <img
@@ -183,12 +194,15 @@ function Home() {
                       </div>
                     </div>
                     <p className="text-xl">
-                      <span className="text-slate-600">ID:</span> {todo.age}
+                      <span className="text-slate-600">ID:</span>
+                      {todo.age ? `${todo.age} $` : "1234"}
+
                     </p>
                     <p className="text-xl">
-                      <span className="text-slate-600">Family Name:</span>{" "}
-                      {todo.familyName}
+                      <span className="text-slate-600">Family Name:</span>
+                      {todo.familyName ? `${todo.familyName} $` : "John Doe"}
                     </p>
+                    <span className="text-lg ">Salary:</span> {todo.salary ? `${todo.salary}$` : "$100"}
                   </div>
                   <div className="flex items-center gap-4">
                     <input
