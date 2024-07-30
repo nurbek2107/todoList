@@ -12,8 +12,6 @@ import { onAuthStateChanged } from "firebase/auth";
 import Home from "./pages/home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import About from "./pages/About";
-import Contact from "./pages/contact";
 import TodoDetail from "./pages/TodoDetail";
 import SelectedTodos from "./pages/SelectedTodos"; // Import the new page
 
@@ -49,14 +47,6 @@ function App() {
           index: true,
           element: <Home />,
           action: HomeAction,
-        },
-        {
-          path: "about",
-          element: <About />,
-        },
-        {
-          path: "contact",
-          element: <Contact />,
         },
         {
           path: "todo-detail",

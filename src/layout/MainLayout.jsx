@@ -7,8 +7,8 @@ import { Outlet } from "react-router-dom";
 function MainLayout() {
   return (
     <>
-      <Navbar />
-      <main>
+    <main className="flex justify-between">
+      <Navbar  />
         <Outlet />
       </main>
     </>

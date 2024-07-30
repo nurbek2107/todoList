@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { IoIosMoon, IoIosSunny } from "react-icons/io";
-import { AiOutlineFileDone } from "react-icons/ai"; // Import an icon for Selected Todos
-import { NavLink, useNavigate } from "react-router-dom";
+import { CiLogout } from "react-icons/ci"; // Import an icon for Selected Todos
+import { NavLink } from "react-router-dom";
 import { signOut } from "firebase/auth";
+import { FaHome } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { auth } from "../firebase/firebaseConfig";
 import toast from "react-hot-toast";
@@ -16,8 +17,6 @@ function Navbar() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const [theme, setTheme] = useState(themeFromLocalStorage);
-  const navigate = useNavigate();
-  const selectedTodos = useSelector((state) => state.todos.selectedTodos); // Assume you have a todos slice managing selected todos
 
   const handleOut = async () => {
     try {
@@ -39,111 +38,53 @@ function Navbar() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const goToSelectedTodosPage = () => {
-    navigate('/selected-todos', { state: { selectedTodos } });
-  };
-
   return (
-    <div className="navbar bg-base-100 w-[1100px] m-auto w-full">
-      <div className="navbar-start">
-        <div className="dropdown">
-          <div tabIndex="0" role="button" className="btn btn-ghost lg:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h8m-8 6h16"
-              />
-            </svg>
-          </div>
-          <ul
-            tabIndex="0"
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
-          >
-            <ul className="p-2">
-              <li>
-                <NavLink to="/">Home</NavLink>
-              </li>
-              <li>
-                <NavLink to="/about">About</NavLink>
-              </li>
-              <li>
-                <NavLink to="/contact">Contact</NavLink>
-              </li>
-            </ul>
-          </ul>
-        </div>
-        <a className="btn btn-ghost text-xl">daisyUI</a>
-      </div>
-      <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          <li>
-            <NavLink to="/">Home</NavLink>
-          </li>
-          <li>
-            <NavLink to="/about">About</NavLink>
-          </li>
-          <li>
-            <NavLink to="/contact">Contact</NavLink>
-          </li>
-        </ul>
-      </div>
-      <div className="navbar-end">
-        <button onClick={handleTheme} className="btn btn-ghost btn-circle">
-          {theme === "wireframe" ? <IoIosSunny /> : <IoIosMoon />}
-        </button>
-        <button onClick={goToSelectedTodosPage} className="btn btn-ghost btn-circle">
-          <AiOutlineFileDone size={24} />
-        </button>
-        {user ? (
-          <div className="dropdown dropdown-end">
-            <div className="flex items-center gap-5">
-              <h1>{user.displayName}</h1>
+    <div className="navbar bg-base-100 w-10 ">
+      <ul className="menu bg-base-200 rounded-box p-3">
+      <li className="mb-3">
+        <NavLink to="/">
+          <FaHome className="h-6 w-6"/>
+</NavLink>
+        </li>
+        <li className="mb-3">
+          <button onClick={handleTheme} className="btn btn-ghost btn-circle">
+            {theme === "wireframe" ? <IoIosSunny className="w-6 h-6 " /> : <IoIosMoon className="w-6 h-6 "/>}
+          </button>
+        </li>
 
+        <div className="mt-2 mb-3">
+          {user ? (
+            <div className="">
+              {/* <h1></h1> */}
               <div
-                tabIndex="0"
-                role="button"
-                className="btn btn-ghost btn-circle avatar"
+                className="tooltip  tooltip-right"
+                data-tip={user.displayName}
               >
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="User Avatar"
-                    src={
-                      user.photoURL ||
-                      "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                    }
-                  />
+                <div tabIndex="0" role="button" className=" avatar">
+                  <div className="w-10 rounded-full">
+                    <img
+                      alt="User Avatar"
+                      src={
+                        user.photoURL ||
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-gukc7EnLg2lXrV35IoDl3SrhFbupHeJhuw&s "
+                      }
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-            <ul
-              tabIndex="0"
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
-            >
-              <li>
-                <NavLink to="/profile">Profile</NavLink>
-              </li>
-              <li>
-                <NavLink to="/settings">Settings</NavLink>
-              </li>
-              <li>
-                <button onClick={handleOut}>Logout</button>
-              </li>
-            </ul>
-          </div>
-        ) : (
-          <NavLink to="/login" className="btn btn-ghost">
-            Login
-          </NavLink>
-        )}
-      </div>
+          ) : (
+            <NavLink to="/login" className="btn btn-ghost">
+              Login
+            </NavLink>
+          )}
+        </div>
+        <li>
+          <a className="btn btn-ghost btn-circle">
+            <CiLogout className="h-6 w-6" onClick={handleOut} />
+          </a>
+        </li>
+      </ul>
     </div>
   );
 }
