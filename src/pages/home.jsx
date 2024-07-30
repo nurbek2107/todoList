@@ -6,6 +6,7 @@ import { Form, useActionData } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { AiOutlineFileDone } from "react-icons/ai";
+import Spline from "@splinetool/react-spline";
 import {
   collection,
   addDoc,
@@ -114,6 +115,12 @@ function Home() {
 
       <div className="flex justify-between gap-10 mt-10">
       <div className="pt-10">
+      <main className="z-0  h-[350px]">
+            <Spline
+              scene="https://prod.spline.design/HtNn-u7PNdXiAZNv/scene.splinecode"
+              options={{ drag: false }}
+            />
+          </main>
         <Form
           method="post"
           className="flex flex-col items-center gap-4 card bg-base-100 w-96 shadow-xl p-5"
