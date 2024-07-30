@@ -1,19 +1,13 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useCollection } from "../hooks/useCollection";
 import FormInput from "../components/FormInput";
 import { Form, useActionData } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { AiOutlineFileDone } from "react-icons/ai";
 import Spline from "@splinetool/react-spline";
-import {
-  collection,
-  addDoc,
-  doc,
-  deleteDoc,
-  serverTimestamp,
-} from "firebase/firestore";
+import { collection, addDoc, doc, deleteDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import toast from "react-hot-toast";
 import "./home.css";
@@ -26,8 +20,7 @@ export const action = async ({ request }) => {
   const email = formData.get("email");
   const img = formData.get("img");
 
-
-  return { title, age, familyName, email,img };
+  return { title, age, familyName, email, img };
 };
 
 export const saveSelectedTodos = (selectedTodos) => {
@@ -46,6 +39,7 @@ function Home() {
     ["uid", "==", user.uid],
     ["createAt"]
   );
+  const isDarkMode = document.documentElement.classList.contains('dark'); 
   const userData = useActionData();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTodos, setSelectedTodos] = useState(loadSelectedTodos());
@@ -106,40 +100,39 @@ function Home() {
   });
 
   const goToSelectedTodosPage = () => {
-    navigate("/selected-todos", { state: { selectedTodos } });
+    navigate("/selected-todos", { state: { selectedTodos }, replace: true });
   };
 
   return (
     <div className="site-container">
-    
-
       <div className="flex justify-between gap-10 mt-10">
-      <div className="pt-10">
-      <main className="z-0  h-[350px]">
-            <Spline
-              scene="https://prod.spline.design/HtNn-u7PNdXiAZNv/scene.splinecode"
-              options={{ drag: false }}
+        <div className="pt-10">
+          <div className="h-[350px]">
+            <Spline 
+              scene={isDarkMode 
+                ? "https://prod.spline.design/HtNn-u7PNdXiAZNv/scene.splinecode" 
+                : "https://prod.spline.design/hL2YGbXW9Oyr-VvX/scene.splinecode"} 
             />
-          </main>
-        <Form
-          method="post"
-          className="flex flex-col items-center gap-4 card bg-base-100 w-96 shadow-xl p-5"
-        >
-          <FormInput type="text" labelText="ID" name="age" />
-          <FormInput type="text" labelText="Family Name" name="familyName" />
-          <div className="w-full pl-3">
-            <button
-              type="submit"
-              className="btn btn-active font-bold rounded mt-8 w-80"
-            >
-              Add
-            </button>
           </div>
-        </Form>
-      </div>
+          <Form
+            method="post"
+            className="flex flex-col items-center gap-4 w-96 shadow-xl p-5"
+          >
+            <FormInput type="text" labelText="ID" name="age" />
+            <FormInput type="text" labelText="Family Name" name="familyName" />
+            <div className="w-full pl-3">
+              <button
+                type="submit"
+                className="btn btn-active font-bold rounded mt-8 w-80"
+              >
+                Add
+              </button>
+            </div>
+          </Form>
+        </div>
         <div className="w-full">
           <div className="flex items-center gap-5 mt-14 justify-between">
-          <button
+            <button
               onClick={goToSelectedTodosPage}
               className="btn btn-primary"
               disabled={selectedTodos.length === 0}
@@ -167,8 +160,6 @@ function Home() {
                 />
               </svg>
             </label>
-
-      
           </div>
 
           <div className="overflow-auto h-[500px] mt-5">
@@ -179,17 +170,18 @@ function Home() {
                   key={todo.id}
                 >
                   <div className="flex gap-8">
-                  <div tabIndex="0" role="button" className=" avatar">
-                  <div className="w-10 rounded-full">
-                    <img
-                      alt="User Avatar"
-                      src={
-                        todo.img || user.photoURL ||
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-gukc7EnLg2lXrV35IoDl3SrhFbupHeJhuw&s"
-                      }
-                    />
-                  </div>
-                </div>
+                    <div tabIndex="0" role="button" className="avatar">
+                      <div className="w-10 rounded-full">
+                        <img
+                          alt="User Avatar"
+                          src={
+                            todo.img ||
+                            user.photoURL ||
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-gukc7EnLg2lXrV35IoDl3SrhFbupHeJhuw&s"
+                          }
+                        />
+                      </div>
+                    </div>
                     <p className="text-xl">
                       <span className="text-slate-600">ID:</span> {todo.age}
                     </p>
@@ -199,8 +191,13 @@ function Home() {
                     </p>
                   </div>
                   <div className="flex items-center gap-4">
-                  <input type="checkbox" defaultChecked className="checkbox" checked={selectedTodos.some((t) => t.id === todo.id)}
-                      onChange={() => handleCheckboxChange(todo)}/>
+                    <input
+                      type="checkbox"
+                      defaultChecked
+                      className="checkbox"
+                      checked={selectedTodos.some((t) => t.id === todo.id)}
+                      onChange={() => handleCheckboxChange(todo)}
+                    />
                     <FaEdit className="w-6 h-6" onClick={() => viewTodoDetails(todo)} />
                     <button
                       onClick={(e) => {

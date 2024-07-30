@@ -1,13 +1,12 @@
-// src/pages/TodoDetail.js
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import toast from "react-hot-toast";
-import './TodoDetail.css'; 
 import { MdOutlineEdit } from "react-icons/md";
-
+import { useSelector } from "react-redux";
 const TodoDetail = () => {
+  const { user } = useSelector((state) => state.user);
   const location = useLocation();
   const navigate = useNavigate();
   const todo = location.state?.todo;
@@ -50,7 +49,7 @@ const TodoDetail = () => {
           <div className='flex-shrink-0'>
             <img 
               className='w-48 h-48 object-cover rounded-xl border-2 border-gray-300'
-              src={img || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-gukc7EnLg2lXrV35IoDl3SrhFbupHeJhuw&s"} 
+              src={img || user.photoURL} 
               alt={familyName || "ToDo"}
             />
           </div>

@@ -1,18 +1,18 @@
-//icons
+
 import { FcGoogle } from "react-icons/fc";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; // Import icons for visibility toggle
-//rrd
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; 
+
 import { Form, Link, useActionData } from "react-router-dom";
-//components
+
 import { FormInput } from "../components";
 import {
   GoogleAuthProvider,
   signInWithPopup,
   sendPasswordResetEmail,
 } from "firebase/auth";
-import { auth } from "../firebase/firebaseConfig"; // Ensure you import your Firebase auth instance
-import { toast } from "react-toastify"; // Ensure you have toast imported and configured
-//hooks
+import { auth } from "../firebase/firebaseConfig"; 
+import { toast } from "react-toastify"; 
+
 import { useLogin } from "../hooks/useLogin";
 import { useEffect, useState } from "react";
 
@@ -26,7 +26,7 @@ export const action = async ({ request }) => {
 function Login() {
   const [forgetPassword, setForgetPassword] = useState(false);
   const [passwordError, setPasswordError] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+  const [showPassword, setShowPassword] = useState(false); 
   const userData = useActionData();
   const { signInWithEmail, isPending } = useLogin();
 
@@ -59,7 +59,6 @@ function Login() {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       toast.success("Google sign-in successful");
-      // Dispatch login action or navigate to the desired page after login
     } catch (error) {
       toast.error(error.message);
     }

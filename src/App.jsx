@@ -1,4 +1,3 @@
-// src/App.js
 import {
   createBrowserRouter,
   Navigate,
@@ -8,24 +7,24 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 
-// Pages
+
 import Home from "./pages/home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import TodoDetail from "./pages/TodoDetail";
 import SelectedTodos from "./pages/SelectedTodos"; // Import the new page
 
-// Layout
+
 import MainLayout from "./layout/MainLayout";
 
-// Loaders
+
 import { action as LoginAction } from "./pages/Login";
 import { action as RegisterAction } from "./pages/Register";
 
-// Components
+
 import ProtectedRoutes from "./components/ProtectedRoutes";
 
-// Redux actions
+
 import { auth } from "./firebase/firebaseConfig";
 import { login, isAuthChange } from "./app/userSlice";
 import { action as HomeAction } from "./pages/home";
@@ -53,7 +52,7 @@ function App() {
           element: <TodoDetail />,
         },
         {
-          path: "selected-todos", // Add the new route
+          path: "selected-todos", 
           element: <SelectedTodos />,
         },
       ],

@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import Spline from "@splinetool/react-spline";
 
-// Action function to handle form data
+
 export const action = async ({ request }) => {
   let formData = await request.formData();
   let displayName = formData.get("displayName");
@@ -22,7 +22,7 @@ export const action = async ({ request }) => {
 function Register() {
   const infoObj = useActionData();
   const [error, setError] = useState(null);
-  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+  const [showPassword, setShowPassword] = useState(false);
   const { registerWithEmail, isPending } = useRegister();
 
   useEffect(() => {
@@ -33,7 +33,7 @@ function Register() {
           return;
         }
 
-        // Simple email format validation
+
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(infoObj.email)) {
           setError("Invalid email format.");
@@ -57,7 +57,6 @@ function Register() {
           }
         } else {
           setError(null);
-          // Redirect or perform other actions upon successful registration
         }
       }
     };
@@ -71,7 +70,7 @@ function Register() {
       const user = result.user;
       console.log(user);
       toast.success("Google sign-in successful");
-      // Dispatch login action or navigate to the desired page after login
+      
     } catch (error) {
       toast.error(error.message);
     }
